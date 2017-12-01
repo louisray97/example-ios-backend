@@ -46,7 +46,7 @@ post '/charge' do
     charge = Stripe::Charge.create(
     :amount => 1000,
     :currency => "gbp",
-   :customer => customer_id,
+   :customer => customer.id,
 )
     post '/charge' do
   authenticate!
@@ -63,7 +63,7 @@ post '/charge' do
     charge = Stripe::Charge.create(
     :amount => 1000,
     :currency => "gbp",
-   :customer => customer.id,
+   :customer => customer_id,
 )
   rescue Stripe::StripeError => e
     status 402
