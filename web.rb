@@ -19,7 +19,7 @@ post '/customer' do
   begin
     token = params[:stripeToken]
     customer = Stripe::Customer.create(
-     :email => "paying.user@example.com"
+     :email => "paying.user@example.com",
     # :source => token,
   )
   rescue Stripe::StripeError => e
