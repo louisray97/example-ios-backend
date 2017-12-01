@@ -14,7 +14,7 @@ get '/' do
   status 200
   return "Great, your backend is set up. Now you can configure the Stripe example apps to point here."
 end
-
+token = params[:stripeToken]
 post '/ephemeral_keys' do
   authenticate!
   begin
