@@ -30,6 +30,11 @@ post '/ephemeral_keys' do
   key.to_json
 end
 
+customer = Stripe::Customer.create(
+  :email => "paying.user@example.com",
+  :source => token,
+)
+
 post '/charge' do
   authenticate!
   # Get the credit card details submitted
@@ -43,13 +48,10 @@ post '/charge' do
   # Create the charge on Stripe's servers - this will charge the user's card
   begin
     charge = Stripe::Charge.create(
-      :amount => payload[:amount], # this number should be in cents
-      :currency => "usd",
-      :customer => customer,
-      :source => source,
-      :description => "Example Charge",
-      :shipping => payload[:shipping],
-    )
+    :amount => 1000,
+    :currency => "gbp",
+   :customer => customer.id,
+)
   rescue Stripe::StripeError => e
     status 402
     return "Error creating charge: #{e.message}"
