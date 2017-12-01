@@ -31,6 +31,7 @@ post '/ephemeral_keys' do
 end
 
 customer = Stripe::Customer.create(
+  token = params[:stripeToken]
   :email => "paying.user@example.com",
   :source => token,
 )
