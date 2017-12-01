@@ -14,18 +14,11 @@ get '/' do
   status 200
   return "Great, your backend is set up. Now you can configure the Stripe example apps to point here."
 end
-token = params[:stripeToken]
-
-# Create a Customer:
-customer = Stripe::Customer.create(
-  :email => "paying.user@example.com",
-  :source => token,
-)
 
 post '/ephemeral_keys' do
   authenticate!
   begin
-    key = Stripe::Customer.create(
+    key = Stripe::EphemeralKey.create(
       {customer: @customer.id},
       {stripe_version: params["api_version"]}
     )
@@ -53,7 +46,10 @@ post '/charge' do
     charge = Stripe::Charge.create(
       :amount => payload[:amount], # this number should be in cents
       :currency => "usd",
-      :customer => customer.id
+      :customer => customer,
+      :source => source,
+      :description => "Example Charge",
+      :shipping => payload[:shipping],
     )
   rescue Stripe::StripeError => e
     status 402
