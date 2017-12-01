@@ -1,3 +1,5 @@
+
+require 'stripe'
 # Set your secret key: remember to change this to your live secret key in production
 # See your keys here: https://dashboard.stripe.com/account/apikeys
 Stripe.api_key = "sk_test_fg6lxRP5xB7Hk8BnlBatro95"
