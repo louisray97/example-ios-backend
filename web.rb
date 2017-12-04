@@ -69,6 +69,14 @@ post '/charge' do
     :currency => "gbp",
    :customer => customer_id,
 )
+    rescue Stripe::StripeError => e
+    status 402
+    return "Error creating ephemeral key: #{e.message}"
+  end
+
+  status 200
+  key.to_json
+end
     
 def authenticate!
   # This code simulates "loading the Stripe customer for your current session".
