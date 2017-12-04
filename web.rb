@@ -36,7 +36,7 @@ post '/customer' do
     token = params[:stripeToken]
     customer = Stripe::Customer.create(
      :email => "paying.user@example.com",
-     :source => stripe.retrieveSource(),
+     :source => token,
   )
   rescue Stripe::StripeError => e
     status 402
@@ -63,6 +63,23 @@ post '/charge' do
     :amount => 1000,
     :currency => "gbp",
    :customer => customer.id,
+)
+    post '/charge' do
+  authenticate!
+  # Get the credit card details submitted
+  payload = params
+  if request.content_type.include? 'application/json' and params.empty? 
+    payload = indifferent_params(JSON.parse(request.body.read))
+  end
+
+  source = payload[:source]
+  customer = payload[:customer_id] || @customer.id
+  # Create the charge on Stripe's servers - this will charge the user's card
+  begin
+    charge = Stripe::Charge.create(
+    :amount => 1000,
+    :currency => "gbp",
+   :customer => customer_id,
 )
   
   rescue Stripe::StripeError => e
