@@ -36,7 +36,7 @@ post '/customer' do
     token = params[:stripeToken]
     customer = Stripe::Customer.create(
      :email => "paying.user@example.com",
-    # :source => token,
+     :source => stripe.retrieveSource(),
   )
   rescue Stripe::StripeError => e
     status 402
